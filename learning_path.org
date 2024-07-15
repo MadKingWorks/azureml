@@ -1,0 +1,559 @@
+Skills at a glance
+
+    Design and prepare a machine learning solution (20–25%)
+
+    Explore data, and train models (35–40%)
+
+    Prepare a model for deployment (20–25%)
+
+    Deploy and retrain a model (10–15%)
+
+Design and prepare a machine learning solution (20–25%)
+Design a machine learning solution
+
+    Determine the appropriate compute specifications for a training workload
+
+    Describe model deployment requirements
+
+    Select which development approach to use to build or train a model
+
+Manage an Azure Machine Learning workspace
+
+    Create an Azure Machine Learning workspace
+
+    Manage a workspace by using developer tools for workspace interaction
+
+    Set up Git integration for source control
+
+    Create and manage registries
+
+Manage data in an Azure Machine Learning workspace
+
+    Select Azure Storage resources
+
+    Register and maintain data-stores
+
+    Create and manage data assets
+
+Manage compute for experiments in Azure Machine Learning
+
+    Create compute targets for experiments and training
+
+    Select an environment for a machine learning use case
+
+    Configure attached compute resources, including Azure Synapse Spark pools and server-less Spark compute
+
+    Monitor compute utilization
+
+Explore data, and train models (35–40%)
+Explore data by using data assets and data stores
+
+    Access and wrangle data during interactive development
+
+    Wrangle interactive data with attached Synapse Spark pools and server-less Spark compute
+
+Create models by using the Azure Machine Learning designer
+
+    Create a training pipeline
+
+    Consume data assets from the designer
+
+    Use custom code components in designer
+
+    Evaluate the model, including responsible AI guidelines
+
+Use automated machine learning to explore optimal models
+
+    Use automated machine learning for tabular data
+
+    Use automated machine learning for computer vision
+
+    Use automated machine learning for natural language processing
+
+    Select and understand training options, including preprocessing and algorithms
+
+    Evaluate an automated machine learning run, including responsible AI guidelines
+
+Use notebooks for custom model training
+
+    Develop code by using a compute instance
+
+    Track model training by using MLflow
+
+    Evaluate a model
+
+    Train a model by using Python SDK v2
+
+    Use the terminal to configure a compute instance
+
+Tune hyper-parameters with Azure Machine Learning
+
+    Select a sampling method
+
+    Define the search space
+
+    Define the primary metric
+
+    Define early termination options
+
+Prepare a model for deployment (20–25%)
+Run model training scripts
+
+    Configure job run settings for a script
+
+    Configure compute for a job run
+
+    Consume data from a data asset in a job
+
+    Run a script as a job by using Azure Machine Learning
+
+    Use MLflow to log metrics from a job run
+
+    Use logs to troubleshoot job run errors
+
+    Configure an environment for a job run
+
+    Define parameters for a job
+
+Implement training pipelines
+
+    Create a pipeline
+
+    Pass data between steps in a pipeline
+
+    Run and schedule a pipeline
+
+    Monitor pipeline runs
+
+    Create custom components
+
+    Use component-based pipelines
+
+Manage models in Azure Machine Learning
+
+    Describe ML-flow model output
+
+    Identify an appropriate framework to package a model
+
+    Assess a model by using responsible AI principles
+
+Deploy and retrain a model (10–15%)
+Deploy a model
+
+    Configure settings for online deployment
+
+    Configure compute for a batch deployment
+
+    Deploy a model to an online endpoint
+
+    Deploy a model to a batch endpoint
+
+    Test an online deployed service
+
+    Invoke the batch endpoint to start a batch scoring job
+    
+    
+;;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Design and prepare a machine learning solution (20–25%)
+Design a machine learning solution
+
+    Determine the appropriate compute specifications for a training workload
+    
+    https://learn.microsoft.com/en-us/azure/machine-learning/concept-compute-target?view=azureml-api-2#compute-targets-for-inference
+    A compute target is a designated compute resource or environment where you run your training script or host your service deployment. This location might be your local machine or a cloud-based compute resource. Using compute targets makes it easy for you to later change your compute environment without having to change your code.
+
+Azure Machine Learning has varying support across different compute targets. In a typical model development life-cycle, you might:
+
+    Start by developing and experimenting on a small amount of data. At this stage, use your local environment, such as a local computer or cloud-based virtual machine (VM), as your compute target.
+    Scale up to larger data, or do distributed training by using one of these training compute targets.
+    After your model is ready, deploy it to a web hosting environment with one of these deployment compute targets.
+
+The compute resources you use for your compute targets are attached to a workspace. Compute resources other than the local machine are shared by users of the workspace.
+Training compute targets
+
+As you scale up your training on larger data-sets or perform distributed training, use Azure Machine Learning compute to create a single- or multi-node cluster that auto-scales each time you submit a job. You can also attach your own compute resource, although support for different scenarios might vary.
+
+Compute targets can be reused from one training job to the next. For example, after you attach a remote VM to your workspace, you can reuse it for multiple jobs. For machine learning pipelines, use the appropriate pipeline step for each compute target.
+    
+   
+
+When choosing a cluster SKU, first scale up and then scale out. Start with a machine that has 150% of the RAM your model requires, profile the result and find a machine that has the performance you need. Once you've learned that, increase the number of machines to fit your need for concurrent inference.
+;;>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+Describe model deployment requirements
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Create a data ingestion pipeline
+
+To create a data ingestion pipeline, you can choose which Azure service to use.
+Azure Synapse Analytics
+
+A commonly used approach to create and run pipelines for data ingestion is using the data integration feature of Azure Synapse Analytics, also known as Azure Synapse Pipelines. With Azure Synapse Pipelines you can create and schedule data ingestion pipelines through the easy-to-use UI, or by defining the pipeline in JSON format.
+
+When you create an Azure Synapse pipeline, you can easily copy data from one source to a data store by using one of the many standard connectors.
+
+Tip
+
+Learn more about the copy activity in Azure Synapse Analytics, and all supported data stores and formats.
+
+To add a data transformation task to your pipeline, you can use a UI tool like mapping data flow or use a language like SQL, Python, or R.
+
+Azure Synapse Analytics allows you to choose between different types of compute that can handle large data transformations at scale: server-less SQL pools, dedicated SQL pools, or Spark pools.
+
+Tip
+
+Learn more about how to perform data integration at scale with Azure Synapse Analytics.
+Azure Databricks
+
+Whenever you prefer a code-first tool and to use SQL, Python, or R to create your pipelines, you can also use Azure Databricks. Azure Databricks allows you to define your pipelines in a notebook, which you can schedule to run.
+
+Azure Databricks uses Spark clusters, which distribute the compute to transform large amounts of data in less time than when you don't use distributed compute.
+
+Tip
+
+Learn more about data engineering with Azure Databricks and how to prepare data for machine learning with Azure Databricks
+Azure Machine Learning
+
+Azure Machine Learning provides compute clusters, which automatically scale up and down when needed. You can create a pipeline with the Designer, or by creating a collection of scripts. Though Azure Machine Learning pipelines are commonly used to train machine learning models, you could also use it to extract, transform, and store the data in preparation for training a machine learning model.
+
+Whenever you want to perform all tasks within the same tool, creating and scheduling an Azure Machine Learning pipeline to run with the on-demand compute cluster may best suit your needs.
+
+However, Azure Synapse Analytics and Azure Databricks offer more scalable compute that allow for transformations to be distributed across compute nodes. Therefore, your data transformations may perform better when you execute them with either Azure Synapse Analytics or Azure Databricks instead of using Azure Machine Learning.
+
+
+
+===================
+
+
+* Pipelines
+ In AML , pipeline is the steps to create a machine learning model.
+ A pipeline can be a build or release pipeline which performs the build and config tasks
+ in azure synapse analytics , a pipe line us used to define the data ingestion and
+ transformation process and process
+
+** Components
+
+   A components consists of three parts:
+   
+   *** Metadata - includes components name , version etc.
+   *** Interface-includes the expected input parameters and expected output
+   *** Command and code environment - Specifies how to run the code
+
+   To create a component -
+    - A script that contains the workflow you want to execute
+    - A YAML file to define the metadata , interface , command , code and env
+
+      ex: prep.py
+      a python file
+
+      import argparse
+      import pandas as pd
+      import numpy as np
+      from pathlib import Path
+      from sklearn.preprocessing import MinMaxScalar
+
+      parser = argparse.ArgumentParser()
+      ...
+      ...
+
+   Now , to create a component for the python file create a yAML file prep.yml
+
+   ex: prep.yml
+   ..
+   ...
+   ...
+
+
+   to load the component , following python code can be used
+   from azure.ai.ml import load_component
+   parent_dir=""
+
+   loaded_component_prep = load_component(source=parent_dir + "./prep.yml")
+
+
+   to use components in a pipeline , we need the python scripts and yml file
+
+*** Create a pipeline
+
+**** build a pipeline
+     + in AML pipeline is a set of tasks and each task is a component
+
+     + components can be made sequentially or parallelly
+     + each component can run ons pecific compute target
+     + a pipeline can be executed as a pipeline job
+     + each component is executed as a child job
+
+       The @pipeline() function can be used to create the YAML file
+
+
+     For ex: prepare a pipeline that first prepares the data and then trains the model
+
+
+     create_pipeline.py
+
+*** setup a git for azure
+ +
+
+   
+*** Manage registeries
+
++ Workspace agnostic entities
+  -models,environments,components,datasets
++ Workspace specific entities
+  -compute
+  -job
+  -endpoints
+
+ - Azure ML registries enables us to use tehse assets in different workspaces
+ - Registries are meanst to facilitate sharing of ML assests across teams within
+    your organisation across all workspaces.A name reflecting of shring scope should be chosen.
+ - Registry names cant be changes ones created.
+   - while defining a registry , the list of regions which registry supports has to be defined
+   -create a list of  regions where you have workspaces today and you plan to add
+**** Create a registry
++ A yaml file has to be created for the  creation of te registry
+
+  name:DemoRegistry1
+  tags:
+    description: Basic registry with one primary region and three secondary region
+    foo: bar
+  location: eastus
+  replication_locations:
+    - location: eastus
+    - location: eastus2
+    - location: westus
+
+
++ Then the registry create command has to be run on azure cli
+  - az ml registry create --file registry.yml
+
+**** Add users to registry
++ either assets only (model , environments , components ) can be accessed from the registry by the users
+  or can be both created and used.
+  - To let a user only read assets , build in Reader role can be granted.
+  - The built in Contributor and owner roles let users create ,. edit and delete registries.
+  - If this is not required ma custom roles should be used.
+    
+
+
+
+
+
+
+**** Share components , environments and models across workspace using registries
++ There can be two scenarios where you would like to have a shared entities
+  + Cross workspace MLOps
+   - develop in dev , test in a tset and prod sytem final deployment - here
+     a end to end lineage is needed.
+  + Share and re-use pipelines across different teams.
+   - Sharing and reuse models and pipelines across different teams
+
+     
+**** Create a SDK conection with registry
++ ml_client = MLClient(...)
+  ml_client_registry  = MLClient(credential=credential,
+                                 registry_name="<registry>",
+				 registry_location="<registry-region")
+
+
+***** Create environment in registry
++environments define the docker container and python dependencies
+
+#+BEGIN_SRC create_env.py
+  build=BuildcONTEXT(PATH="../../../CLI/JOBS/PI-PELINE_WITH_COMPONENTS")
+  name="SKlearn",
+  version=str(1)
+  description="scikit learn environment",
+#+END_SRC
+
+ml_cient.registry.environments.create_or_update(env_docker_context)
+
+
+
+*** Environments
+
+*** Manage data in azure ML
++ URI:Uniform Resource identifier
++ within the azure machine learning workspace , if data is to be astored , datastore or data assets
+  can be used
++ Datastores and data assets allow you to securely store the connection information to your data
++ To find and access data , in Azure ML , from a remote location ,a URI can be used
+  _A URI references the location of your data_
+  - The URI need to have a protocol to access the data
+  ++ There are three protocol while accessing data
+  +++ https - Used for data stores in azure BLOB or public available https(s) location
+  +++ abfs - used for azure data lake storage gen 2
+  +++ azureml - used for data stored in datastore
+
+**** DataStores
++ a datastore ecapsulate the info needed to conenct to a data storage
+_Benefits of datastores:_
+
++ provide easy to use URI to your data storage
++ facilitate data discoery within azure machine learning
++ securely store connection information
+
+  Authentication methods to conect datastores
+  + Credential based
+    + used a service principal shared access signature (SAS) token or account key o authenticate
+
+    + Identity based Microsoft entra identity
+
+
+Types of data stores:
++++ Azure BLOB
++++ Azure file share
++++ Azure Data lake
+
+Buildin datastores:
+++++ Every workspace has two data stores-
+1. Two connecting to azure storage blob containers
+2. Two connecting to azure storage file shares
+
+**** Create a DataStore
+
+***** Benefits:
++ Datastores allow you to connect to storage servixes without having to provide the necessary detaisl.
+  When you create a datastore , you procide a name that can be used to retrwive a data info
+  Also creates a protective layer for isolation of users of data from teh sata system
+***** Create a datastore
+#+BEGIN_SRC create_datastore.py
+  blob_datastore = AzureBlobStorage(
+  name="bloc_example",
+  description="datastore",
+  account_name="mytestblobstore",
+  container_name="data-container",
+  credentials=AccountKeyConfiguration(
+  account_key="Xxxxxxxxxxxxxxxxxxxx"
+),
+)
+  ml_client.create_or_update(blob_datastore)
+#+END_SRC
+
+blob_datstore= AzureBlobDataStorage(
+          name="blob_example",
+	  description="Datasctore pointing to a blob container",
+	  account_name="mytestblobstorage",
+	  container_name="data-container",
+	  credentials=AccountKeyConfiguration(
+	  account_key="XXXXXXXXXXXXXXXX"
+),
+)
+ml_client.create_or_update(blob_datstore)
+#+end_src
+
+***** Create a data asset
++ data assets are erferences to where the data is stored
++ how to access the data
++ Other relevant metadata
+
+  data assets can
+  - connect to datastores
+  - Azure storage services
+  - public URL
+  - data stored on your local device
+  Benefits of data assets are
+  - share and reuse data
+  - seamlessly access data
+  - version the metadata
+
+  Type of data assets
+  - URI file :: Points to a specific file
+  - URI folder :: points to a folder
+  - MLTable ::Points to a folder / file .includes a schema to read as tabular data
+  
+
+  When to use data assets
+  - while using the matchine learning script as a job
+
+  /Create a URI file data asset/
+
+  + the azuer ml data asset only stores the path of the file
+  #+begin_src  :: create_dataasset_file.py
+    from azure.ai.ml.entities import Data
+    from azure.ai.ml.constants import AssetTypes
+    my_path = '<supported path>'
+    my_data = Data(
+              path = my_path,
+    type=AssetTypes.URI_FILE,
+    description="<description>",
+    name="<name>",
+    version="<version>")
+    ml_client.data.create_or_update(my_data)
+  #+end_src
+
+
+
+
+***** create and manage compute resources
+[[source][https://learn.microsoft.com/en-us/training/modules/work-compute-resources-azure-machine-learning/4-create-use-compute-cluster]]
+
+
+
+****** Types of computes
++ experimentation in notebook :: compute instance;serverless spark
++ :: 
++ Run job to train model :: compute cluster;serverless compute;kubernetes cluster;attached 
++ Run pipeline(batch) jobs :: compute cluster;serverless compute;kubernetes cluster;attached
++ Deploy Model to real-time :: containers;kubernetes clusters
++  :: 
+
+  
+
+
+****** create a compute instance with python sdk
+#+begin_src
+from azure.ai.ml.entities import ComputeInstance
+ci_basic_name="my_basic_unique_name"
+ci_basic_name = ComputeInstance(
+    name=ci_basic_name,
+    size="STANDARD_DS3_v2",
+    idle_time_before_shutdown_minutes="30",
+)
+ml_client.begin_create_or_update(ci_basic).result()
+#+end_src
+
+
+****** create a compute cluster with python sdk
+#+begn_src
+from azure.ai.ml.entities import AmlCompute
+
+cluster_basic = AmlCompute(
+    name="cpu=cluster",    #
+    type="amlcompute",
+    size="STANDARD_DS3_v2",
+    location="westus",
+    min_instances=0,
+    max_instances=4,
+    idle_time_before_scale_down=120,
+    tier="low_priority",
+    
+)
+ml_client.begin_create_or_update(cluster_basi).result()
+
+
+#+end_src
+
+****** use a compute cluster
++ the compute cluster can be used when run the pipeline you creste ina designer
++ un an automated machine learning job
++ runnig the script as a job
+
+****** using a compute cluster to run a job
+#+begin_src
+  from azure.ai.ml import command
+  job = command(
+  code="./src",    #location of code
+  command="python diabeters.py",    #command
+  environment="AzureML-sklearn-0.24-ubuntu18.04-py37-cpu@latest",
+  compute="cpu-cluster",    #cluster name
+  experiment_name="diabetes-training"
+)
+  returned_job = ml_client.create_or_update(job)
+  aml_url=returned_job.studio_url
+  print(f"monitor your job at {aml_url")
+#+end_src
+
+****** serverless spark compute
+[[source][https://learn.microsoft.com/en-us/azure/machine-learning/apache-spark-azure-ml-concepts?view=azureml-api-2
+
++ 
