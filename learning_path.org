@@ -556,4 +556,7 @@ ml_client.begin_create_or_update(cluster_basi).result()
 ****** serverless spark compute
 [[source][https://learn.microsoft.com/en-us/azure/machine-learning/apache-spark-azure-ml-concepts?view=azureml-api-2
 
-+ 
++ serverless spark compute
+  + easiest way to achieve distributed computing inazure machine learning
+  + users can avoid the need to create an azure synapse workspace and a synapse spark pool
+  + xs
